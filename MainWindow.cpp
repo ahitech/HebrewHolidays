@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 
 #include <Application.h>
+#include <InterfaceDefs.h>
 #include <LayoutBuilder.h>
 
 MainWindow::~MainWindow()
@@ -22,7 +23,6 @@ MainWindow::MainWindow(void)
 {
 	float width, height;
 	this->mainView = new MainView(Bounds());
-
 
 	mainView->GetPreferredSize(&width, &height);
 	ResizeTo (width, height);

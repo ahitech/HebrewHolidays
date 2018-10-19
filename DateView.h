@@ -14,6 +14,7 @@ class DateView : public BStringView
 
 		void UpdateDay();
 		void GetPreferredSize(float *width, float *height);
+		void AttachedToWindow();
 
 	private:
 

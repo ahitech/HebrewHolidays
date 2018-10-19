@@ -5,6 +5,7 @@
 #include <View.h>
 
 #include "DateView.h"
+#include "MoonPhase.h"
 
 class MainView : public BView
 {
@@ -19,6 +20,7 @@ class MainView : public BView
 
 	private:
 		DateView* dateView;
+		MoonPhaseDisplay *moonView;
 };
 
 

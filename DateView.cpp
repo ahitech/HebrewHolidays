@@ -57,3 +57,13 @@ void DateView::GetPreferredSize (float *width, float* height)
 	*height = fontHeight.ascent + fontHeight.descent + fontHeight.leading +
 				TEXT_MARGINS;
 }
+
+void DateView::AttachedToWindow ()
+{
+	BView* parent = Parent();
+	if (parent)
+	{
+		SetViewColor (parent->ViewColor());
+	}
+	BView::AttachedToWindow();
+}

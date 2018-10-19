@@ -9,7 +9,7 @@ resource	app_version		{
 				long_info = "A replicant showing current Hebrew date and additional information."
 };
 
-resource(0, "Moon")		#'PNG ' import "Full_moon.png";
+resource(0, "Moon")		#'PNG ' import "Transparent.png";
 
 resource vector_icon {
         $"6E636966010202040200E87171FF251616020A04262430505F5F50300000010A"
