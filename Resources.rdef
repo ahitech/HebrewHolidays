@@ -1,0 +1,17 @@
+resource	app_signature	"application/x-vnd.hitech-HebrewHolidays";
+
+resource	app_version		{
+				major = 0,
+				middle = 1,
+				minor = 0,
+
+				short_info = "Hebrew Lunar calendar",
+				long_info = "A replicant showing current Hebrew date and additional information."
+};
+
+resource(0, "Moon")		#'PNG ' import "Full_moon.png";
+
+resource vector_icon {
+        $"6E636966010202040200E87171FF251616020A04262430505F5F50300000010A"
+        $"00020100024035E50000000000004022B6C550D7C422B6"
+};
