@@ -35,7 +35,7 @@ RDEFS = Resources.rdef \
 
 #	Specify the resource files to use. Full or relative paths can be used.
 #	Both RDEFS and RSRCS can be utilized in the same Makefile.
-RSRCS = \
+RSRCS =  \
 
 
 # End Pe/Eddie support.
@@ -56,7 +56,7 @@ RSRCS = \
 #	- 	if your library does not follow the standard library naming scheme,
 #		you need to specify the path to the library and it's name.
 #		(e.g. for mylib.a, specify "mylib.a" or "path/mylib.a")
-LIBS =  /boot/system/lib/libroot.so /boot/system/lib/libbe.so /boot/system/lib/libsupc++.so /boot/system/lib/libstdc++.so libhdate.a intl
+LIBS =  /boot/system/lib/libroot.so /boot/system/lib/libbe.so /boot/system/lib/libsupc++.so /boot/system/lib/libstdc++.so libhdate.a intl translation
 
 #	Specify additional paths to directories following the standard libXXX.so
 #	or libXXX.a naming scheme. You can specify full paths or paths relative
@@ -103,7 +103,7 @@ SYMBOLS :=
 
 #	Includes debug information, which allows the binary to be debugged easily.
 #	If set to "TRUE", debug info will be created.
-DEBUGGER :=
+DEBUGGER := TRUE
 
 #	Specify any additional compiler flags to be used.
 COMPILER_FLAGS =

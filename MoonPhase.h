@@ -18,7 +18,7 @@ class MoonPhaseDisplay : public BView
 
 //		void UpdateDisplay(hdate_struct* date);
 		void AttachedToWindow();
-
+		void Draw(BRect updateRect);
 	private:
 		BBitmap *picture;
 

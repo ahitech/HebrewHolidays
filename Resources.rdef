@@ -9,6 +9,7 @@ resource	app_version		{
 				long_info = "A replicant showing current Hebrew date and additional information."
 };
 
+
 resource(0, "Moon")		#'PNG ' import "Transparent.png";
 
 resource vector_icon {

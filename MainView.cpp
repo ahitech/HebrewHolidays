@@ -16,32 +16,40 @@ MainView::MainView (BRect frame)
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
 	dateView->UpdateDay();
-	dateView->ResizeToPreferred();
-	dateView->GetPreferredSize(&width, &height);
 
-	moonView = new MoonPhaseDisplay(BRect(0, 0, 300, 300));
+	moonView = new MoonPhaseDisplay(BRect(0, 20, 300, 320));
 
-//	BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
-//		.SetExplicitAlignment(BAlignment(B_ALIGN_USE_FULL_WIDTH,
-//										 B_ALIGN_USE_FULL_HEIGHT))
-//		.Add(dateView, 0.0f)
-//		.Add(moonView, 0.0f)
-//	.End();
+	BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
+		.SetExplicitAlignment(BAlignment(B_ALIGN_USE_FULL_WIDTH,
+										 B_ALIGN_USE_FULL_HEIGHT))
+		.Add(dateView, 0.0f)
+		.Add(moonView, 1.0f)
+	.End();
 
-	this->AddChild (dateView);
-	this->AddChild (moonView);
-	ResizeTo(width, 300+height);
+	ResizeToPreferred();
 }
 
 
 MainView::~MainView ()
 {
+	BView *temp, *tempSibling;
 	this->LockLooper();
+
+	if (temp = this->ChildAt(0))
+	{
+		while (temp) {
+			tempSibling = temp->NextSibling();
+			temp->RemoveSelf();
+			temp = tempSibling;
+		}
+	}
+/*
 	if (dateView != NULL)
 	{
 		dateView->RemoveSelf();
 		delete dateView;
 	}
+*/
 //	this->UnlockLooper();
 }
 
@@ -49,12 +57,36 @@ MainView::~MainView ()
 
 void MainView::GetPreferredSize (float *width, float *height)
 {
-	if (dateView != NULL)
+	float tempWidth, tempHeight;
+	BView* temp;
+
+	// Sanity check
+	if (width == NULL || height == NULL)
+		return;
+
+	*width = *height = TEXT_MARGINS;
+
+	if (temp = this->ChildAt(0))
 	{
-		dateView->GetPreferredSize(width, height);
+		while (temp) {
+			temp->GetPreferredSize(&tempWidth, &tempHeight);
+			if (tempWidth > *width)
+				*width = tempWidth;
+			*height += tempHeight;
+			temp = temp->NextSibling();
+		}
 	}
-	else
-	{
-		*width = *height = TEXT_MARGINS;
-	}
+}
+
+
+
+void MainView::ResizeTo (float width, float height)
+{
+}
+
+
+void MainView::ResizeBy (float width, float height)
+{
+	BRect bounds = this->Bounds();
+	this->ResizeTo (bounds.Width() + width, bounds.Height() + height);
 }

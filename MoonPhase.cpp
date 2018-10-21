@@ -3,6 +3,8 @@
 #include <Resources.h>
 #include <Roster.h>
 #include <TranslationUtils.h>
+#include <TranslatorFormats.h>
+#include <stdio.h>
 
 
 #include "MoonPhase.h"
@@ -21,7 +23,10 @@ MoonPhaseDisplay::MoonPhaseDisplay (BRect frame)
 	size_t size;
 	if (res.SetTo(&file) == B_OK)
 	{
-		picture = (BBitmap *)res.LoadResource((uint32)'PNG ', "Moon", &size);
+		picture = BTranslationUtils::GetBitmap((uint32)'PNG ', "Moon");
+//		picture = (BBitmap *)res.LoadResource((uint32)'PNG ', "logo", &size);
+//		printf ("Successfully loaded picture in size of %d!\n", size);
+//		printf ("Its validity is %s, pointer is 0x%08X!\n", (picture->IsValid() ? "valid" : "not valid"));
 	}
 }
 
@@ -43,10 +48,19 @@ void MoonPhaseDisplay::AttachedToWindow ()
 		SetViewColor (parent->ViewColor());
 	}
 	BView::AttachedToWindow();
+}
+
+void MoonPhaseDisplay::Draw(BRect updateRect)
+{
+	BView::Draw(updateRect);
 
 	// Add it as the background of current view
 	if (picture != NULL)
 	{
-		DrawBitmap (picture);
+		SetHighColor(255, 0, 0);
+		StrokeRect(Bounds());
+
+		DrawBitmap (picture, Bounds());
+//		printf ("In DRAW!\n");
 	}
 }

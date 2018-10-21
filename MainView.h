@@ -17,6 +17,8 @@ class MainView : public BView
 //		status_t Archive(BMessage* , bool deep = true) const;
 //		static BArchivable* Instantiate (BMessage *);
 		void GetPreferredSize(float *width, float* height);
+		void ResizeTo (float width, float height);
+		void ResizeBy (float width, float height);
 
 	private:
 		DateView* dateView;
