@@ -25,7 +25,6 @@ class MainView : public BView
 	private:
 		DateView* dateView;
 		MoonPhaseDisplay *moonView;
-		BView* filler;
 };
 
 

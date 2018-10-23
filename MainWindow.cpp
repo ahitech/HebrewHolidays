@@ -15,7 +15,7 @@ MainWindow::~MainWindow()
 
 
 MainWindow::MainWindow(void)
-	:	BWindow (BRect(100,100,120,120),
+	:	BWindow (BRect(100,100,220,225),
 				 "HH",
 				 B_TITLED_WINDOW,
 				 B_ASYNCHRONOUS_CONTROLS),
@@ -23,6 +23,9 @@ MainWindow::MainWindow(void)
 {
 	float width, height;
 	this->mainView = new MainView(Bounds());
+
+	GetSizeLimits (NULL, &width, NULL, &height);
+	SetSizeLimits (115, width, 125, height);
 
 	mainView->GetPreferredSize(&width, &height);
 	ResizeTo (width, height);

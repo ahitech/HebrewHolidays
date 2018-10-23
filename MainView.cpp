@@ -15,12 +15,6 @@ MainView::MainView (BRect frame)
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
-	filler = new BView (BRect(0, 0, 5, 5),
-						"GlueView",
-						B_FOLLOW_ALL_SIDES,
-						B_FRAME_EVENTS | B_WILL_DRAW);
-	filler->SetViewColor(this->ViewColor());
-
 	dateView->UpdateDay();
 
 	moonView = new MoonPhaseDisplay();
@@ -28,12 +22,12 @@ MainView::MainView (BRect frame)
 	BLayoutBuilder::Group<>(this, B_VERTICAL, TEXT_MARGINS)
 		.SetExplicitAlignment(BAlignment(B_ALIGN_USE_FULL_WIDTH,
 										 B_ALIGN_USE_FULL_HEIGHT))
-		.SetExplicitMinSize(BSize(100, 120))
+		.SetExplicitMinSize(BSize(120, 125))
 		.Add(dateView, 0.0f)
 		.Add(moonView, 1.0f)
+			.SetExplicitMinSize (BSize (100, 100))
 			.SetExplicitAlignment(BAlignment (B_ALIGN_HORIZONTAL_CENTER,
 											  B_ALIGN_TOP))
-//		.Add(filler, 0.0f)
 	.End();
 
 	ResizeToPreferred();
