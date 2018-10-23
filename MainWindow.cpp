@@ -15,8 +15,8 @@ MainWindow::~MainWindow()
 
 
 MainWindow::MainWindow(void)
-	:	BWindow (BRect(100,100,500,400),
-				 "Main Window",
+	:	BWindow (BRect(100,100,120,120),
+				 "HH",
 				 B_TITLED_WINDOW,
 				 B_ASYNCHRONOUS_CONTROLS),
 		mainView (NULL)

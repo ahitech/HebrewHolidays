@@ -13,12 +13,15 @@
 class MoonPhaseDisplay : public BView
 {
 	public:
-		MoonPhaseDisplay(BRect frame);
+		MoonPhaseDisplay();
 		~MoonPhaseDisplay();
 
 //		void UpdateDisplay(hdate_struct* date);
 		void AttachedToWindow();
 		void Draw(BRect updateRect);
+		void GetPreferredSize (float *width, float *height);
+		void ResizeTo (float width, float height);
+		void ResizeBy (float , float );
 	private:
 		BBitmap *picture;
 

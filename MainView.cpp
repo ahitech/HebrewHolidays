@@ -7,7 +7,7 @@ MainView::MainView (BRect frame)
 	: BView(frame,
 			"MainView",
 			B_FOLLOW_ALL_SIDES,
-			B_WILL_DRAW | B_FULL_UPDATE_ON_RESIZE | B_FRAME_EVENTS),
+			B_WILL_DRAW | B_FULL_UPDATE_ON_RESIZE | B_FRAME_EVENTS | B_PULSE_NEEDED),
 	  dateView (NULL)
 {
 	float width, height;
@@ -15,15 +15,25 @@ MainView::MainView (BRect frame)
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
+	filler = new BView (BRect(0, 0, 5, 5),
+						"GlueView",
+						B_FOLLOW_ALL_SIDES,
+						B_FRAME_EVENTS | B_WILL_DRAW);
+	filler->SetViewColor(this->ViewColor());
+
 	dateView->UpdateDay();
 
-	moonView = new MoonPhaseDisplay(BRect(0, 20, 300, 320));
+	moonView = new MoonPhaseDisplay();
 
-	BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
+	BLayoutBuilder::Group<>(this, B_VERTICAL, TEXT_MARGINS)
 		.SetExplicitAlignment(BAlignment(B_ALIGN_USE_FULL_WIDTH,
 										 B_ALIGN_USE_FULL_HEIGHT))
+		.SetExplicitMinSize(BSize(100, 120))
 		.Add(dateView, 0.0f)
 		.Add(moonView, 1.0f)
+			.SetExplicitAlignment(BAlignment (B_ALIGN_HORIZONTAL_CENTER,
+											  B_ALIGN_TOP))
+//		.Add(filler, 0.0f)
 	.End();
 
 	ResizeToPreferred();
@@ -43,14 +53,6 @@ MainView::~MainView ()
 			temp = tempSibling;
 		}
 	}
-/*
-	if (dateView != NULL)
-	{
-		dateView->RemoveSelf();
-		delete dateView;
-	}
-*/
-//	this->UnlockLooper();
 }
 
 
@@ -72,14 +74,23 @@ void MainView::GetPreferredSize (float *width, float *height)
 			temp->GetPreferredSize(&tempWidth, &tempHeight);
 			if (tempWidth > *width)
 				*width = tempWidth;
-			*height += tempHeight;
+			*height += tempHeight + TEXT_MARGINS;
 			temp = temp->NextSibling();
 		}
 	}
 }
 
 
+void MainView::Pulse ()
+{
+	if (dateView)
+	{
+		dateView->UpdateDay();
+	}
+}
 
+
+#if 0
 void MainView::ResizeTo (float width, float height)
 {
 }
@@ -90,3 +101,4 @@ void MainView::ResizeBy (float width, float height)
 	BRect bounds = this->Bounds();
 	this->ResizeTo (bounds.Width() + width, bounds.Height() + height);
 }
+#endif

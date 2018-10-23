@@ -1,5 +1,6 @@
 #include <Application.h>
 #include <File.h>
+#include <Point.h>
 #include <Resources.h>
 #include <Roster.h>
 #include <TranslationUtils.h>
@@ -9,8 +10,9 @@
 
 #include "MoonPhase.h"
 
-MoonPhaseDisplay::MoonPhaseDisplay (BRect frame)
-	:	BView (frame, "MoonPhaseDisplay",
+MoonPhaseDisplay::MoonPhaseDisplay ()
+	:	BView (BRect (0, 0, 100, 100),
+			   "MoonPhaseDisplay",
 			   B_FOLLOW_ALL_SIDES,
 			   B_WILL_DRAW | B_FULL_UPDATE_ON_RESIZE),
 		picture(NULL)
@@ -24,9 +26,6 @@ MoonPhaseDisplay::MoonPhaseDisplay (BRect frame)
 	if (res.SetTo(&file) == B_OK)
 	{
 		picture = BTranslationUtils::GetBitmap((uint32)'PNG ', "Moon");
-//		picture = (BBitmap *)res.LoadResource((uint32)'PNG ', "logo", &size);
-//		printf ("Successfully loaded picture in size of %d!\n", size);
-//		printf ("Its validity is %s, pointer is 0x%08X!\n", (picture->IsValid() ? "valid" : "not valid"));
 	}
 }
 
@@ -48,19 +47,58 @@ void MoonPhaseDisplay::AttachedToWindow ()
 		SetViewColor (parent->ViewColor());
 	}
 	BView::AttachedToWindow();
+	ResizeToPreferred();
 }
 
 void MoonPhaseDisplay::Draw(BRect updateRect)
 {
-	BView::Draw(updateRect);
 
+	BView::Draw(updateRect);
+	BView::SetDrawingMode (B_OP_OVER);
 	// Add it as the background of current view
 	if (picture != NULL)
 	{
-		SetHighColor(255, 0, 0);
-		StrokeRect(Bounds());
+		BRect viewBounds = Bounds(), drawTo;
+		float width = viewBounds.Width(), height = viewBounds.Height();
 
-		DrawBitmap (picture, Bounds());
+		drawTo.SetLeftTop (BPoint (0, 0));
+		if (width > height)
+		{
+			drawTo.SetRightBottom (BPoint (height, height));
+			drawTo.OffsetBy (BPoint ((width - height)/ 2.0, 0));
+		} else {
+			drawTo.SetRightBottom (BPoint (width, width));
+		}
+
+		DrawBitmap (picture, drawTo);
 //		printf ("In DRAW!\n");
 	}
 }
+
+
+void MoonPhaseDisplay::GetPreferredSize (float *width, float *height)
+{
+	*width = *height = 100;
+}
+
+#if 0
+void MoonPhaseDisplay::ResizeTo (float width, float height)
+{
+	if (width > height)
+	{
+		BView::ResizeTo (height, height);
+	}
+	else
+	{
+		BView::ResizeTo (width, width);
+	}
+	this->Draw (Bounds());
+}
+
+void MoonPhaseDisplay::ResizeBy (float relativeWidth, float relativeHeight)
+{
+	BRect rect = this->Bounds();
+	this->ResizeTo (rect.Width() + relativeWidth,
+					rect.Height() + relativeHeight);
+}
+#endif

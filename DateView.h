@@ -4,7 +4,7 @@
 #include <StringView.h>
 #include "hdate.h"
 
-unsigned const char TEXT_MARGINS = 20;	// 10 pixels from each side
+unsigned const char TEXT_MARGINS = 5;	// 10 pixels from each side
 
 class DateView : public BStringView
 {
@@ -19,6 +19,7 @@ class DateView : public BStringView
 	private:
 
 		hdate_struct* currentDay;
+		bool todayIsDisplayed;
 
 };	// <-- end of class DateView
 

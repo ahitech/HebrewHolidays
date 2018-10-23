@@ -10,7 +10,7 @@ resource	app_version		{
 };
 
 
-resource(0, "Moon")		#'PNG ' import "Transparent.png";
+resource(0, "Moon")		#'PNG ' import "Moon.png";
 
 resource vector_icon {
         $"6E636966010202040200E87171FF251616020A04262430505F5F50300000010A"
