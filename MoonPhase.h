@@ -20,10 +20,11 @@ class MoonPhaseDisplay : public BView
 		void AttachedToWindow();
 		void Draw(BRect updateRect);
 		void GetPreferredSize (float *width, float *height);
-		void ResizeTo (float width, float height);
-		void ResizeBy (float , float );
+//		void ResizeTo (float width, float height);
+//		void ResizeBy (float , float );
 	private:
 		BBitmap *picture;
+		BPicture
 
 };
 
