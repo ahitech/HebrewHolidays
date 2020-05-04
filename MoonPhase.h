@@ -24,7 +24,7 @@ class MoonPhaseDisplay : public BView
 //		void ResizeBy (float , float );
 	private:
 		BBitmap *picture;
-		BPicture
+//		BPicture
 
 };
 

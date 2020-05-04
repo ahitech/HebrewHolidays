@@ -8,48 +8,20 @@ DateView::DateView ()
 	:	BStringView (BRect(0, 0, 30, 30),
 					 "Current Day", "",
 					 B_FOLLOW_H_CENTER | B_FOLLOW_TOP,
-					 B_WILL_DRAW | B_FULL_UPDATE_ON_RESIZE),
-		currentDay (NULL),
-		todayIsDisplayed (TRUE)
+					 B_WILL_DRAW | B_FULL_UPDATE_ON_RESIZE)
 {
-	this->currentDay = new_hdate ();
-	hdate_set_gdate (this->currentDay, 0, 0, 0);
 }
 
 
 DateView::~DateView()
 {
-	if (NULL != this->currentDay)
-	{
-		delete_hdate (currentDay);
-	}
 }
 
 
-void DateView::UpdateDay()
+void DateView::UpdateDay(hdate_struct* currentDay)
 {
 	char text[100];
 	BWindow* parent;
-
-	if (this->todayIsDisplayed)
-	{
-		time_t currentTime = time (NULL);
-		struct tm *today = localtime (&currentTime);
-
-		if (today)
-		{
-			if ((today->tm_year+1900  != currentDay->gd_year) ||
-				(today->tm_mon+1      != currentDay->gd_mon) ||
-				(today->tm_mday       != currentDay->gd_day))
-			{
-				hdate_set_gdate(currentDay,
-								today->tm_mday,
-								today->tm_mon + 1,
-								today->tm_year + 1900);
-
-			}
-		}
-	}
 
 	// Lock the window while changing stuff
 	if (NULL != (parent = this->Window()))
