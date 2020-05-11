@@ -7,6 +7,9 @@
 #include "DateView.h"
 #include "MoonPhase.h"
 #include "hdate.h"
+#include "DaysLeftToNextHoliday.h"
+
+class DaysLeftToNextHoliday;
 
 /*!
  *	\note	In case of error, all fields must be set to 0.
@@ -45,7 +48,7 @@ class MainView : public BView
 	private:
 		DateView* dateView;
 		MoonPhaseDisplay *moonView;
-		
+		DaysLeftToNextHoliday* nextHolidayView;
 		void NextHoliday();
 		
 };

@@ -26,6 +26,7 @@ SRCS = \
 	 MainView.cpp  \
 	 MainWindow.cpp  \
 	 MoonPhase.cpp	\
+	 DaysLeftToNextHoliday.cpp	\
 
 
 #	Specify the resource definition files to use. Full or relative paths can be

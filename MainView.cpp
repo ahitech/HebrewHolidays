@@ -23,12 +23,17 @@ MainView::MainView (BRect frame)
 	dateView->UpdateDay(currentHDate);
 
 	moonView = new MoonPhaseDisplay();
+	nextHolidayView = new DaysLeftToNextHoliday();
 
 	BLayoutBuilder::Group<>(this, B_VERTICAL, TEXT_MARGINS)
 		.SetExplicitAlignment(BAlignment(B_ALIGN_USE_FULL_WIDTH,
 										 B_ALIGN_USE_FULL_HEIGHT))
 		.SetExplicitMinSize(BSize(100, 110))
 		.Add(dateView, 0.0f)
+			.SetExplicitMinSize (BSize (100, 10))
+			.SetExplicitAlignment (BAlignment (B_ALIGN_HORIZONTAL_CENTER,
+											   B_ALIGN_BOTTOM))
+		.Add(nextHolidayView, 0.0f)
 			.SetExplicitMinSize (BSize (100, 10))
 			.SetExplicitAlignment (BAlignment (B_ALIGN_HORIZONTAL_CENTER,
 											   B_ALIGN_BOTTOM))
@@ -87,12 +92,12 @@ void MainView::GetPreferredSize (float *width, float *height)
 
 void MainView::Pulse ()
 {
-	if (dateView)
-	{
-		if (CalculateHDate())
+//	if (dateView)
+//	{
+//		if (CalculateHDate())
 			UpdateAllFields();
-	}
-	NextHoliday();
+//	}
+//	NextHoliday();
 }
 
 
@@ -103,7 +108,8 @@ void MainView::Pulse ()
  */
 void MainView::UpdateAllFields()
 {
-	dateView->UpdateDay(currentHDate);	
+	dateView->UpdateDay(currentHDate);
+	nextHolidayView->UpdateDay(currentHDate);
 }
 
 
@@ -192,9 +198,9 @@ void MainView::NextHoliday()
 		
 	}
 	while (holiday == 0);
-	printf ("Next holiday is in %d days: %s\n",
-			counter,
-			hdate_string (HDATE_STRING_HOLIDAY, holiday, HDATE_STRING_LONG, HDATE_STRING_LOCAL));
+//	printf ("Next holiday is in %d days: %s\n",
+//			counter,
+//			hdate_string (HDATE_STRING_HOLIDAY, holiday, HDATE_STRING_LONG, HDATE_STRING_LOCAL));
 	delete_hdate(inTest);
 }
 
