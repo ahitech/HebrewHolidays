@@ -20,6 +20,7 @@ DaysLeftToNextHoliday::DaysLeftToNextHoliday()
 					 B_WILL_DRAW | B_FULL_UPDATE_ON_RESIZE)
 {
 	nextHoliday = new_hdate();
+	toDisplay = COUNTDOWN;
 }
 
 
@@ -48,12 +49,13 @@ void DaysLeftToNextHoliday::UpdateDay(const hdate_struct* in)
 	if (!in) return;		// Sanity check
 	struct tm *tempTM = GetGregorianDate (in);
 	hdate_struct* tempHDate = new_hdate();
+	time_t	timeSinceEpoch;
 	
 	do
 	{
 		tempTM->tm_mday++;
 		counter++;
-		mktime(tempTM);
+		timeSinceEpoch = mktime(tempTM);
 		hdate_set_gdate(tempHDate,
 						tempTM->tm_mday,
 						tempTM->tm_mon + 1,
@@ -65,15 +67,84 @@ void DaysLeftToNextHoliday::UpdateDay(const hdate_struct* in)
 			  49,
 			  "%a, %D",
 			  tempTM);
+			  
+/*			  
 	printf ("Next holiday %d eve is in %d %s, on %s: %s\n",
 			holiday,
 			counter,
 			counter > 1 ? "days" : "day",
 			buffer,
 			hdate_string (HDATE_STRING_HOLIDAY, holiday, HDATE_STRING_LONG, HDATE_STRING_LOCAL));
-	
+*/	
+	UpdateString(timeSinceEpoch, counter, holiday, tempTM);
 	delete_hdate (tempHDate);
 	delete tempTM;	
+}
+
+
+
+/**
+ *	\function 	void DaysLeftToNextHoliday::UpdateString(const time_t,
+ *														int counter,
+ *														int holiday)
+ *	\brief		Updates the text countdown to the next holiday
+ *	\param[in]	timeSinceEpoch	When the next holiday starts
+ *	\param[in]	counter			Counter until the next holiday
+ *	\param[in]	holiday			Holiday type (required to get name of the holiday)
+ *	\param[in]	nextHolidayInGregorian	Next holiday's date in Gregorian calendar (can be NULL)
+ */
+void DaysLeftToNextHoliday::UpdateString(const time_t timeSinceEpoch,
+										 const int counter,
+										 const int holiday,
+										 struct tm* nextHolidayInGregorian)
+{
+	BDateFormat format();	// Default locale
+	BString		nextHolidayFromLibHdate;
+	BString		stringToSet;
+	char buffer[50];
+	memset (buffer, ' ', 49);
+	buffer[49] = '\0';
+	
+	nextHolidayFromLibHdate.SetTo(hdate_string (HDATE_STRING_HOLIDAY, 
+												 holiday, 
+												 HDATE_STRING_LONG,
+												 HDATE_STRING_LOCAL));
+												 
+	nextHolidayFromLibHdate.ReplaceAll("_", " ");
+			 
+	switch (toDisplay)
+	{
+		case COUNTDOWN:
+			stringToSet << nextHolidayFromLibHdate << " is in " << counter << ((counter > 1) ?  " days" : " day");
+			break;
+		case NEXT_HOLIDAY_ONLY:
+			stringToSet << nextHolidayFromLibHdate;
+			break;
+		case NEXT_DATE_IN_GREGORIAN:
+			if (nextHolidayInGregorian != NULL) {
+				strftime (buffer,
+								  49,
+								  "%a, %D",
+								  nextHolidayInGregorian);
+				stringToSet << "Next holiday is on ";
+			}
+			stringToSet << buffer;
+			break;
+		case NEXT_DATE_IN_GREGORIAN_WITH_NAME:
+			if (nextHolidayInGregorian != NULL) {
+				strftime (buffer,
+								  49,
+								  "%a, %D",
+								  nextHolidayInGregorian);
+				stringToSet << nextHolidayFromLibHdate << " is on ";
+			}
+			stringToSet << buffer;
+			break;
+		case NONE:		// Intentional fall-through
+		default:		// "Last item" falls here as well
+			stringToSet.SetTo("                                                ");	// Empty string
+	};
+	this->SetText(stringToSet.String());
 }
 
 
@@ -136,3 +207,22 @@ struct tm* DaysLeftToNextHoliday::GetGregorianDate (const hdate_struct *in)
 	}
 	return toReturn;	
 }
+
+
+/**
+ *	\function	void DaysLeftToNextHoliday::MouseDown(BPoint point)
+ *	\param[in]		point	The position in which the user clicked
+ *	\brief	This function changes the display of the View.
+ */
+ void DaysLeftToNextHoliday::MouseDown(BPoint point)
+ {
+ 	printf ("ToDisplay was %d. ", this->toDisplay);
+ 	this->toDisplay = (enum DisplayedInfo)(this->toDisplay + 1);
+ 	if 	(this->toDisplay == LAST_ITEM_DONT_USE) {
+ 		this->toDisplay = NONE;
+ 	}
+ 	printf ("ToDisplay is %d.\n", this->toDisplay);
+ 	
+ 	// Call the base function of the class
+	BStringView::MouseDown(point);
+ } 
