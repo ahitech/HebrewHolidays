@@ -26,6 +26,9 @@ class MoonPhaseDisplay : public BView
 		BBitmap *picture;
 //		BPicture
 
+	protected:
+		void DrawCover (unsigned int date);
+
 };
 
 

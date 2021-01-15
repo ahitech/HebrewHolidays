@@ -81,6 +81,21 @@ void MoonPhaseDisplay::GetPreferredSize (float *width, float *height)
 	*width = *height = 100;
 }
 
+
+
+/**
+ *	\brief		This function covers part of the Moon picture if requested.
+ *	\param[in]	day	Current moon day (day in the current moon month)
+ *	\details	Details of the algorithm:
+ *				Moon month can be either 28, 29 or 30 days. 
+ */
+void MoonPhaseDisplay::DrawCover(unsigned int moonDay)
+{
+	
+	
+}
+
+
 #if 0
 void MoonPhaseDisplay::ResizeTo (float width, float height)
 {
