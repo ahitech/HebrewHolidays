@@ -142,9 +142,12 @@ void DaysLeftToNextHoliday::UpdateString(const time_t timeSinceEpoch,
 			break;
 		case NONE:		// Intentional fall-through
 		default:		// "Last item" falls here as well
-			stringToSet.SetTo("                                                ");	// Empty string
+			stringToSet.SetTo("                                              ");	// Empty string
 	};
+	
 	this->SetText(stringToSet.String());
+	this->SetAlignment(B_ALIGN_CENTER);
+	
 }
 
 
