@@ -3,7 +3,18 @@
 #ifndef __CALENDAR_CONTROL_H__
 #define __CALENDAR_CONTROL_H__
 
+// System headers
 #include <Control.h>
+#include <RadioButton.h>
+#include <String.h>
+#include <StingView.h>
+
+// Local headers
+#include "hdate.h"
+
+
+const uint32	GREGORIAN_SELECTED 	= 'GrSl';
+const uint32	HEBREW_SELECTED		= 'HbSl';
 
 
 /*!	\brief		Enum that represents in which format does the CalendarControl
@@ -35,12 +46,27 @@ class CalendarControl
 		
 		virtual CalendarControl();
 		
-		virtual void AttachedToWindow();
-		virtual void MessageReceived(BMessage *in);
-		virtual void SetEnabled(bool);
-		virtual bool IsEnabled(bool);
-	protected:
+		virtual void GetSelectedDate(void* out, enum DateRepresentingStructureFormat* );
+		virtual void SetDate(const void* in, enum DateRepresentingStructureFormat* );
 		
+		virtual void AttachedToWindow();
+		virtual status_t Archive(BMessage* out, bool deep = true);
+		static CalendarControl* Instantiate(BMessage* in);
+		const char*  Label() const;
+		virtual void MessageReceived(BMessage *in);
+		virtual void ResizeTo();
+		virtual void SetEnabled(bool);
+		virtual void SetLabel(const char* in);
+		virtual bool IsEnabled(bool);
+		
+	protected:
+		virtual void UpdateControl();
+	
+		// Data members
+		BStringView	m_Label;		//!<	Label of the Calendar Control
+		BStringView m_DateString;	//!<	Currently chosen date
+		BRadioButton m_Gregorian;	//!<	Radio button for selecting Gregorian calendar
+		BRadioButton m_Hebrew;		//!<	Radio button for selecting Hebrew calendar
 };
 
 #endif

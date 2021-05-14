@@ -2,6 +2,10 @@
 
 #include "CalendarControl.h"
 
+#undef 	B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "CalendarControl"
+
+
 
 
 #define 	BUTTON_WIDTH	30
@@ -41,8 +45,30 @@ CalendarControl::CalendarControl  ( BRect 	frame,
 									uint32	flags)
 	: BControl (frame, name, label, message, resizingMode, flags)
 {
+	m_Label = new BStingView(BRect (0, 0, 1, 1),
+							 "label",
+							 labelInForCalendar);
+	m_Gregorian = new BRadioButton (BRect(0, 0, 1, 1),
+									"gregorian radio",
+									B_TRANSLATE("Gregorian"),
+									new BMessage(GREGORIAN_SELECTED));
+	m_Hebrew = new BRadioButton (BRect(0, 0, 1, 1),
+								 "hebrew radio",
+								 B_TRANSLATE("Hebrew"),
+								 new BMessage(HEBREW_SELECTED));
 	
 	
+	BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
+		.SetInsets(5)
+		.Add(m_Label)
+		.AddGroup(B_HORIZONTAL)
+			.SetInsets(2)
+			.Add(m_DateString)
+			.Add(<<MENU BUTTON>>)
+		.End()	
+		.Add(fDataView)
+		.Add(fCloseButton)
+	.Layout();
 	
 }
 // <-- end of constructor from set of values
@@ -65,8 +91,36 @@ CalendarControl::CalendarControl(BMessage* in)
  */
 CalendarControl::~CalendarControl()
 {
+	if (m_Label) {
+		m_Label->RemoveSelf();
+		delete m_Label;
+		m_Label = NULL;
+	}
 	
 }
+
+
+
+/*!	\brief		Function that handles internal messages
+ *	\details
+ *	\param[in]	in	BMessage that was sent to internal loopen
+ */
+void CalendarControl::MessageReceived (BMessage in)
+{
+	if (!in)	return;			// Sanity check
+	switch (in->what)
+	{
+		case GREGORIAN_SELECTED:
+			break;
+		case HEBREW_SELECTED:
+			break;
+		default:
+			// If nothing helps, kick the problem to the base class :)
+			BControl::MessageReceived(in);
+			break;
+	};	// <-- end of "switch (message constant)"
+}
+// <-- end of function CalendarControl::MessageReceived()
 
 
 
@@ -96,3 +150,26 @@ void CalendarControl::AttachedToWindow()
 //	this->Relayout();
 	this->Invalidate();
 }
+
+
+
+/*!	\brief		Set the new label for the control.
+ *	\param[in]	in	New label to be set
+ */
+void CalendarControl::SetLabel(const char* in) {
+	if (in)
+	{
+		m_Label.SetText(in);
+		Invalidate();	
+	}	
+}	// <-- end of function CalendarControl::SetLabel(const char *)
+
+
+
+/*!	\brief		Update the overall look of the Calendar Control.
+ */
+void CalendarControl::UpdateControl()
+{
+	this->Invalidate();
+}
+// <-- end of function CalendarControl::UpdateControl()
