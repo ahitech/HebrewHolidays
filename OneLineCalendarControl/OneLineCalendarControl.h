@@ -6,7 +6,37 @@
 #define __ONE_LINE_CALENDAR_CONTROL_H__
 
 #include <Control.h>
+#include <Menu.h>
+#include <String.h>
 #include <SupportDefs.h>
+
+
+BString ConvertNumberToHebew(unsigned char number);
+
+
+class MonthView
+	: public BMenu
+{
+public:
+	MonthView(const char* name, float width, float height);
+	MonthView(BMessage* archive);
+	virtual ~MonthView();
+	
+	virtual status_t Archive(BMessage* archive, bool deep = true);
+	
+protected:
+	BString dayNames[31],
+			monthNames[13],
+			yearNames[11];
+			
+	BButton*	nextYear,
+				previousYear,
+				nextMonth,
+				previousMonth;
+				
+	BStringView*	currentYear,
+					currentMonth;
+}
 
 
 class OneLineCalendarControl
@@ -25,6 +55,7 @@ public:
 	virtual void AttachedToWindow();
 
 private:
+	
 
 };
 

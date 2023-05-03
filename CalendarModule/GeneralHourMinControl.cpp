@@ -10,7 +10,7 @@
 // System includes
 #include <Alignment.h>
 #include <GridLayout.h>
-#include	<GroupLayout.h>
+#include <GroupLayout.h>
 #include <Font.h>
 #include <Layout.h>
 #include <LayoutItem.h>
